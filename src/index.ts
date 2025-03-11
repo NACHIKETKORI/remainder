@@ -1,24 +1,32 @@
+import { Reminder, ReminderDatabase } from './remainder';
 
-// app.ts
-import ReminderDatabase from './remainder';  // Importing ReminderDatabase class
+// Example Usage
+const db = new ReminderDatabase();
 
-// Create an instance of ReminderDatabase
-const reminderDb = new ReminderDatabase();
+// Creating a reminder
+db.createReminder("1", "Buy groceries", "2025-03-15");
 
-// Create some reminders
-reminderDb.createReminder('1', 'Buy groceries', 'Milk, eggs, bread', '2025-03-12');
-reminderDb.createReminder('2', 'Doctor appointment', 'Checkup at 3 PM', '2025-03-15');
-
-// Get all reminders
-console.log('All Reminders:', reminderDb.getAllReminders());
+// Check if reminder exists
+console.log(db.exists("1"));  // true
 
 // Get a specific reminder
-console.log('Reminder with id 1:', reminderDb.getReminder('1'));
+const reminder = db.getReminder("1");
+console.log(reminder?.toString());
 
-// Update a reminder
-reminderDb.updateReminder('1', 'Buy groceries', 'Milk, eggs, bread, butter', '2025-03-14');
-console.log('Updated Reminder with id 1:', reminderDb.getReminder('1'));
+// Mark as completed
+db.markReminderAsCompleted("1");
+
+// Get all completed reminders
+const completed = db.getAllRemindersMarkedAsCompleted();
+console.log(completed);
+
+// Update the reminder
+db.updateReminder("1", "Buy groceries and milk", "2025-03-16");
+
+// Get all reminders due by today
+const dueToday = db.getAllRemindersDueByToday();
+console.log(dueToday);
 
 // Remove a reminder
-reminderDb.removeReminder('2');
-console.log('All Reminders after removal:', reminderDb.getAllReminders());
+db.removeReminder("1");
+console.log(db.exists("1"));  // false
